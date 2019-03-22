@@ -223,6 +223,8 @@ public class ReversiController {
                     int key = model.repaintSquare.get(i).getKey();
                     int value = model.repaintSquare.get(i).getValue();
 
+                    // 0 элемент всегда содержит координаты клетки,
+                    // которой нужно вернуть желтое выделение
                     if (i == 0)
                         updateSquare(key, value, 3);
                     else
