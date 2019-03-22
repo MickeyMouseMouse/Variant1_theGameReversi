@@ -206,26 +206,28 @@ public class ReversiController {
 
                 Object row = GridPane.getRowIndex(source);
                 Object column = GridPane.getColumnIndex(source);
-                if (row != null && column != null) {
-                    boolean tmpFl = false;
-                    for (Pair<Integer, Integer> p : model.possibleMoves)
-                        if (p.getKey() == row && p.getValue() == column) {
-                            tmpFl = true;
-                            break;
-                        }
 
-                    if (tmpFl) {
-                        model.analyzeAction((int)row, (int)column, false, true);
-                        for (Pair<Integer, Integer> p : model.repaintSquare)
-                            updateSquare(p.getKey(), p.getValue(), 4);
+                if (row != null && column != null) {
+                    for (Pair<Integer, Integer> p1 : model.possibleMoves)
+                        if (p1.getKey() == row && p1.getValue() == column) {
+                            model.analyzeAction((int)row, (int)column, false, true);
+                            for (Pair<Integer, Integer> p2 : model.repaintSquare)
+                                updateSquare(p2.getKey(), p2.getValue(), 4);
                     }
                 }
             });
 
             // Уход мыши из клетки
             g.setOnMouseExited((e) -> {
-                for (Pair<Integer, Integer> p : model.repaintSquare)
-                    updateSquare(p.getKey(), p.getValue(), model.array[p.getKey()][p.getValue()]);
+                for (int i = 0; i < model.repaintSquare.size(); i++) {
+                    int key = model.repaintSquare.get(i).getKey();
+                    int value = model.repaintSquare.get(i).getValue();
+
+                    if (i == 0)
+                        updateSquare(key, value, 3);
+                    else
+                        updateSquare(key, value, model.array[key][value]);
+                }
             });
         }
     }

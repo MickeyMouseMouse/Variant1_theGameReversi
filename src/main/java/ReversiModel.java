@@ -140,6 +140,8 @@ public class ReversiModel {
     boolean analyzeAction (int i, int j, boolean implement, boolean showPotential) {
         repaintSquare.clear();
 
+        if (showPotential) repaintSquare.add(new Pair<>(i, j));
+
         // Номер игрока, который будет делать сейчас ход
         byte blackOrWhite = fl ? (byte) 1 : 2;
 
@@ -183,13 +185,14 @@ public class ReversiModel {
                         if (!implement && !showPotential) return true;
 
                         if (implement)
-                            for (int z = newJ + 1; z <= j; z++) {
+                            for (int z = j; z > newJ; z--) {
                                 array[i][z] = blackOrWhite;
                                 repaintSquare.add(new Pair<>(i, z));
                             }
 
+
                         if (showPotential)
-                            for (int z = newJ + 1; z < j; z++)
+                            for (int z = j - 1; z > newJ; z--)
                                 repaintSquare.add(new Pair<>(i, z));
                     }
 
@@ -240,13 +243,13 @@ public class ReversiModel {
                         if (!implement && !showPotential) return true;
 
                         if (implement)
-                            for (int p = newI + 1; p <= i; p++) {
+                            for (int p = i; p > newI; p--) {
                                 array[p][j] = blackOrWhite;
                                 repaintSquare.add(new Pair<>(p, j));
                             }
 
                         if (showPotential)
-                            for (int p = newI + 1; p < i; p++)
+                            for (int p = i - 1; p > newI; p--)
                                 repaintSquare.add(new Pair<>(p, j));
                     }
 
