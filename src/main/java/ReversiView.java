@@ -42,7 +42,7 @@ public class ReversiView extends Application {
         controller.horizontalNumeration.setLayoutX(75);
         controller.horizontalNumeration.setLayoutY(560);
 
-        // Настройка визуализации игрального поля
+        // Настройка визуализации игрового поля
         controller.grid.setLayoutX(50);
         controller.grid.setLayoutY(70);
         controller.grid.setGridLinesVisible(true);

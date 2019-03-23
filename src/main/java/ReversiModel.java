@@ -31,7 +31,7 @@ public class ReversiModel {
     // Храненит координаты клеток, которые нужно перерисовать
     final List<Pair<Integer, Integer>> repaintSquare = new ArrayList<>();
 
-    // Инициализация всех параметров начальными значениями
+    // Инициализировать все параметры начальными значениями
     void initialValues() {
         repaintSquare.clear();
 
@@ -134,7 +134,9 @@ public class ReversiModel {
 
     // implement = false : проверяет, найдется ли непрерывный ряд фишек соперника
     // хотя бы по одному из 8 возможных направлений, если сходить в (i, j)
+    //
     // implement = true : делает ход в (i, j)
+    //
     // showPotential = true, когда нужно отметить фишки, которыми завладеет игрок,
     // если сделает ход в (i, j)
     boolean analyzeAction (int i, int j, boolean implement, boolean showPotential) {
@@ -226,7 +228,6 @@ public class ReversiModel {
 
                     break;
                 }
-
                 count++;
             }
         }
@@ -255,7 +256,6 @@ public class ReversiModel {
 
                     break;
                 }
-
                 count++;
             }
         }
@@ -297,7 +297,6 @@ public class ReversiModel {
 
                     break;
                 }
-
                 count++;
             }
         }
@@ -339,7 +338,6 @@ public class ReversiModel {
 
                     break;
                 }
-
                 count++;
             }
         }
@@ -381,7 +379,6 @@ public class ReversiModel {
 
                     break;
                 }
-
                 count++;
             }
         }

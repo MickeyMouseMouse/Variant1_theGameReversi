@@ -17,29 +17,29 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class ReversiController {
-    private ReversiModel model = new ReversiModel();
+    final private ReversiModel model = new ReversiModel();
 
     // Двумерный массив для изображений (Canvas) ячеек
-    private final static Canvas[][] arrayCanvas = new Canvas[8][8];
+    final private static Canvas[][] arrayCanvas = new Canvas[8][8];
 
-    // Визуализация надписи WHITE
+    // Надпись WHITE
     final Text white = new Text(430, 30, "WHITE: ");
 
-    // Визуализация счета
+    // Счет
     final Text blackScoreText = new Text(135, 30, "");
     final Text whiteScoreText = new Text(500, 30, "");
 
-    // Визуализация кнопки RESTART
+    // RESTART
     final Button restart = new Button("RESTART");
 
-    // Визуализация надписи BLACK
+    // Надпись BLACK
     final Text black = new Text(65, 30, "BLACK: ");
 
-    // Взуализация вертикальной нумерации клеток
+    // Вертикальная нумерация клеток
     final VBox verticalNumeration = new VBox(44, new Text("8"), new Text("7"), new Text("6"),
             new Text("5"), new Text("4"), new Text("3"), new Text("2"), new Text("1"));
 
-    // Взуализация горизонтальной нумерации клеток
+    // Горизонтальная нумерация клеток
     final HBox horizontalNumeration = new HBox(51, new Text("A"), new Text("B"), new Text("C"),
             new Text("D"), new Text("E"), new Text("F"), new Text("G"), new Text("H"));
 
@@ -50,13 +50,14 @@ public class ReversiController {
     // Ссылка на Wikipedia статью об игре
     final Hyperlink hyperlink = new Hyperlink("Read About Reversi In Wikipedia");
 
-    // Визуализация указателя хода
+    // Указатель хода
     final Text helper = new Text(220, 60, "");
 
     // Визуализация окнчания партии
     final Rectangle rect = new Rectangle();
     final Text text = new Text(100, 320, "Game Over. Press RESTART to continue");
 
+    // Задать всем параметрам начальные значения
     void forRestart() {
         model.initialValues();
         for (Pair<Integer, Integer> p : model.repaintSquare)
@@ -66,19 +67,16 @@ public class ReversiController {
         for (Pair<Integer, Integer> p : model.possibleMoves)
             updateSquare(p.getKey(), p.getValue(), 3);
 
-        // Скрытие сообщения о завершении партии
         rect.setVisible(false);
         text.setVisible(false);
 
-        // Установка подсказки, кто ходит
         helper.setText("1 player (black)");
 
-        // Отображение начального счета
         whiteScoreText.setText(String.valueOf(model.getWhiteScoreByte()));
         blackScoreText.setText(String.valueOf(model.getBlackScoreByte()));
     }
 
-    // Перерисовывает заданную клетки поля; mode:
+    // Перерисовать заданную клетку поля; mode:
     // 0 - клетка пустая
     // 1 - клетка занята черной фишкой
     // 2 - клетка занята белой фишкой
@@ -93,7 +91,6 @@ public class ReversiController {
 
         GraphicsContext picture = result.getGraphicsContext2D();
 
-        // Очистка прежнего изображеия
         if (mode != 4) {
             picture.clearRect(0, 0, 60, 60);
             picture.setGlobalAlpha(1);
@@ -132,7 +129,7 @@ public class ReversiController {
             picture.strokeRoundRect(7, 7, 45,45, 10, 10);
         }
 
-        // Добавление в пустую клетку звезды
+        // Добавление в клетку полупрозрачной звезды
         if (mode == 4) {
             // Координаты вершин звезды
             double[] x = {9, 23, 30, 37, 51, 40, 45, 30, 15, 19};
@@ -149,7 +146,7 @@ public class ReversiController {
         if (tmpFl) grid.add(arrayCanvas[i][j], j, i);
     }
 
-    // Нахождение координат выбранной игроком клетки grid
+    // Сделать ход
     void makeNextStep() {
         grid.getChildren()
                 .forEach(grid ->
@@ -197,7 +194,8 @@ public class ReversiController {
                         }));
     }
 
-    // Обработчики событий наведения и удаления мыши с клетки
+    // Выделить фишки, которыми можно завладеть, если сделать ход в клетку,
+    // на которую наведена мышка
     void showNextPotentialStep() {
         for (Node g : grid.getChildren()) {
             // Приход мыши в клетку
@@ -234,7 +232,7 @@ public class ReversiController {
         }
     }
 
-    // Сообщает о конце партии и ее результате
+    // Сообщить о конце партии и ее результате
     private void gameOver() {
         rect.setVisible(true);
         text.setVisible(true);
@@ -254,7 +252,7 @@ public class ReversiController {
         helper.setText("Drawn game");
     }
 
-    // Открытие Wikipedia статьи об игре в браузере
+    // Открыть Wikipedia статью об игре в браузере
     void openWiki() {
         try {
             Desktop.getDesktop().browse(new URI("https://en.wikipedia.org/wiki/Reversi"));
