@@ -1,7 +1,9 @@
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ReversiModel {
     // Двумерный массив. Возможные значения элементов:
@@ -22,18 +24,18 @@ public class ReversiModel {
     private static boolean impossibleNextStepBlack;
     private static boolean impossibleNextStepWhite;
 
-    // Массив с элементами Pair
+    // Набор с элементами Pair
     // Храненит координаты клеток, подходящих для следующего хода
     // (эти клетки отдельно подсвечиваются на поле желтым)
-    final List<Pair<Integer, Integer>> possibleMoves = new ArrayList<>();
+    Set<Pair<Integer, Integer>> possibleMoves;
 
     // Массив с элементами Pair
     // Храненит координаты клеток, которые нужно перерисовать
-    final List<Pair<Integer, Integer>> repaintSquare = new ArrayList<>();
+    List<Pair<Integer, Integer>> repaintSquare;
 
     // Инициализировать все параметры начальными значениями
     void initialValues() {
-        repaintSquare.clear();
+        repaintSquare = new ArrayList<>();
 
         // Инициализация array начальными значениями
         for (int i = 0; i < 8; i++)
@@ -72,7 +74,7 @@ public class ReversiModel {
         // Проверка на конец партии
         if (impossibleNextStepBlack && impossibleNextStepWhite) return;
 
-        possibleMoves.clear();
+        possibleMoves = new HashSet<>();
         // Номер того игрока, который ходил в предыдущий раз
         byte blackOrWhite = fl ? (byte) 2 : 1;
         for (int i = 0; i < 8; i++)
@@ -118,7 +120,7 @@ public class ReversiModel {
                 }
 
         // Проверка на невозможность сделать дальнейший ход
-        if (possibleMoves.size() == 0) {
+        if (possibleMoves.isEmpty()) {
             if (fl)
                 impossibleNextStepBlack = true;
             else
@@ -140,9 +142,9 @@ public class ReversiModel {
     // showPotential = true, когда нужно отметить фишки, которыми завладеет игрок,
     // если сделает ход в (i, j)
     boolean analyzeAction (int i, int j, boolean implement, boolean showPotential) {
-        repaintSquare.clear();
+        repaintSquare = new ArrayList<>();
 
-        if (showPotential) repaintSquare.add(new Pair<>(i, j));
+        if (implement || showPotential) repaintSquare.add(new Pair<>(i, j));
 
         // Номер игрока, который будет делать сейчас ход
         byte blackOrWhite = fl ? (byte) 1 : 2;
@@ -159,14 +161,11 @@ public class ReversiModel {
                         if (!implement && !showPotential) return true;
 
                         if (implement)
-                            for (int z = j; z < newJ; z++) {
+                            for (int z = j; z < newJ; z++)
                                 array[i][z] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(i, z));
-                            }
 
-                        if (showPotential)
-                            for (int z = j + 1; z < newJ; z++)
-                                repaintSquare.add(new Pair<>(i, z));
+                        for (int z = j + 1; z < newJ; z++)
+                            repaintSquare.add(new Pair<>(i, z));
                     }
 
                     break;
@@ -187,15 +186,11 @@ public class ReversiModel {
                         if (!implement && !showPotential) return true;
 
                         if (implement)
-                            for (int z = j; z > newJ; z--) {
+                            for (int z = j; z > newJ; z--)
                                 array[i][z] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(i, z));
-                            }
 
-
-                        if (showPotential)
-                            for (int z = j - 1; z > newJ; z--)
-                                repaintSquare.add(new Pair<>(i, z));
+                        for (int z = j - 1; z > newJ; z--)
+                            repaintSquare.add(new Pair<>(i, z));
                     }
 
                     break;
@@ -216,14 +211,11 @@ public class ReversiModel {
                         if (!implement && !showPotential) return true;
 
                         if (implement)
-                            for (int p = i; p < newI; p++) {
+                            for (int p = i; p < newI; p++)
                                 array[p][j] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(p, j));
-                            }
 
-                        if (showPotential)
-                            for (int p = i + 1; p < newI; p++)
-                                repaintSquare.add(new Pair<>(p, j));
+                        for (int p = i + 1; p < newI; p++)
+                            repaintSquare.add(new Pair<>(p, j));
                     }
 
                     break;
@@ -244,14 +236,11 @@ public class ReversiModel {
                         if (!implement && !showPotential) return true;
 
                         if (implement)
-                            for (int p = i; p > newI; p--) {
+                            for (int p = i; p > newI; p--)
                                 array[p][j] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(p, j));
-                            }
 
-                        if (showPotential)
-                            for (int p = i - 1; p > newI; p--)
-                                repaintSquare.add(new Pair<>(p, j));
+                        for (int p = i - 1; p > newI; p--)
+                            repaintSquare.add(new Pair<>(p, j));
                     }
 
                     break;
@@ -278,20 +267,17 @@ public class ReversiModel {
                             int z = j;
                             while(p < newI && z < newJ) {
                                 array[p][z] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(p, z));
                                 p++;
                                 z++;
                             }
                         }
 
-                        if (showPotential) {
-                            int p = i + 1;
-                            int z = j + 1;
-                            while(p < newI && z < newJ) {
-                                repaintSquare.add(new Pair<>(p, z));
-                                p++;
-                                z++;
-                            }
+                        int p = i + 1;
+                        int z = j + 1;
+                        while(p < newI && z < newJ) {
+                            repaintSquare.add(new Pair<>(p, z));
+                            p++;
+                            z++;
                         }
                     }
 
@@ -319,20 +305,17 @@ public class ReversiModel {
                             int z = j;
                             while(p < newI && z > newJ) {
                                 array[p][z] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(p, z));
                                 p++;
                                 z--;
                             }
                         }
 
-                        if (showPotential) {
-                            int p = i + 1;
-                            int z = j - 1;
-                            while(p < newI && z > newJ) {
-                                repaintSquare.add(new Pair<>(p, z));
-                                p++;
-                                z--;
-                            }
+                        int p = i + 1;
+                        int z = j - 1;
+                        while(p < newI && z > newJ) {
+                            repaintSquare.add(new Pair<>(p, z));
+                            p++;
+                            z--;
                         }
                     }
 
@@ -360,20 +343,17 @@ public class ReversiModel {
                             int z = j;
                             while(p > newI && z > newJ) {
                                 array[p][z] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(p, z));
                                 p--;
                                 z--;
                             }
                         }
 
-                        if (showPotential) {
-                            int p = i - 1;
-                            int z = j - 1;
-                            while(p > newI && z > newJ) {
-                                repaintSquare.add(new Pair<>(p, z));
-                                p--;
-                                z--;
-                            }
+                        int p = i - 1;
+                        int z = j - 1;
+                        while(p > newI && z > newJ) {
+                            repaintSquare.add(new Pair<>(p, z));
+                            p--;
+                            z--;
                         }
                     }
 
@@ -402,20 +382,17 @@ public class ReversiModel {
                             int z = j;
                             while(p > newI && z < newJ) {
                                 array[p][z] = blackOrWhite;
-                                repaintSquare.add(new Pair<>(p, z));
                                 p--;
                                 z++;
                             }
                         }
 
-                        if (showPotential) {
-                            int p = i - 1;
-                            int z = j + 1;
-                            while(p > newI && z < newJ) {
-                                repaintSquare.add(new Pair<>(p, z));
-                                p--;
-                                z++;
-                            }
+                        int p = i - 1;
+                        int z = j + 1;
+                        while(p > newI && z < newJ) {
+                            repaintSquare.add(new Pair<>(p, z));
+                            p--;
+                            z++;
                         }
                     }
 

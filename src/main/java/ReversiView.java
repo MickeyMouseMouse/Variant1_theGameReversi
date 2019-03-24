@@ -57,18 +57,19 @@ public class ReversiView extends Application {
         controller.helper.setFont(Font.font(null,17));
 
         // Настройка визуализация окончания партии:
-        // на сером фоне(rect) надпись(text) о конце партии
-        controller.rect.setX(90);
-        controller.rect.setY(290);
-        controller.rect.setWidth(400);
-        controller.rect.setHeight(50);
-        controller.rect.setFill(Color.DARKGREY);
-        controller.text.setFont(Font.font(null, 20));
+        controller.rect.setX(130);
+        controller.rect.setY(270);
+        controller.rect.setWidth(320);
+        controller.rect.setHeight(80);
+        controller.rect.setFill(Color.GREENYELLOW);
+        controller.text1.setFont(Font.font(null, 20));
+        controller.text2.setFont(Font.font(null, 20));
 
         // Добавление всех элементов в окно
         Group root = new Group(controller.white, controller.whiteScoreText, controller.restart, controller.black,
                 controller.blackScoreText, controller.horizontalNumeration, controller.verticalNumeration,
-                controller.grid, controller.helper, controller.hyperlink, controller.rect, controller.text);
+                controller.grid, controller.helper, controller.hyperlink, controller.rect, controller.text1,
+                controller.text2);
         Scene scene = new Scene(root, Color.LIGHTSEAGREEN);
         stage.setScene(scene);
 

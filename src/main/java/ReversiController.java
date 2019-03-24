@@ -15,6 +15,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class ReversiController {
     final private ReversiModel model = new ReversiModel();
@@ -51,11 +52,12 @@ public class ReversiController {
     final Hyperlink hyperlink = new Hyperlink("Read About Reversi In Wikipedia");
 
     // Указатель хода
-    final Text helper = new Text(220, 60, "");
+    final Text helper = new Text(225, 60, "");
 
-    // Визуализация окнчания партии
+    // Визуализация окончания партии
     final Rectangle rect = new Rectangle();
-    final Text text = new Text(100, 320, "Game Over. Press RESTART to continue");
+    final Text text1 = new Text(232, 300, "");
+    final Text text2 = new Text(160, 335, "Press RESTART to continue");
 
     // Задать всем параметрам начальные значения
     void forRestart() {
@@ -68,7 +70,9 @@ public class ReversiController {
             updateSquare(p.getKey(), p.getValue(), 3);
 
         rect.setVisible(false);
-        text.setVisible(false);
+        text1.setVisible(false);
+        text2.setVisible(false);
+        helper.setVisible(true);
 
         helper.setText("1 player (black)");
 
@@ -126,7 +130,7 @@ public class ReversiController {
         if (mode == 3) {
             picture.setStroke(Color.YELLOW);
             picture.setLineWidth(2.0);
-            picture.strokeRoundRect(7, 7, 45,45, 10, 10);
+            picture.strokeRoundRect(6, 6, 48,48, 10, 10);
         }
 
         // Добавление в клетку полупрозрачной звезды
@@ -172,23 +176,14 @@ public class ReversiController {
                                         updateSquare(p.getKey(), p.getValue(), 0);
 
                                     model.analyzeAction(i, j, true, false);
-
                                     for (Pair<Integer, Integer> p : model.repaintSquare)
                                         updateSquare(p.getKey(), p.getValue(), model.array[p.getKey()][p.getValue()]);
 
                                     model.setPossibleMoves();
-                                    if (!model.possibleMoves.isEmpty()) {
-                                        for (Pair<Integer, Integer> p : model.possibleMoves)
-                                            updateSquare(p.getKey(), p.getValue(), 3);
-
-                                        if (model.fl)
-                                            helper.setText("1 player (black)");
-                                        else
-                                            helper.setText("2 player (white)");
-
-                                        whiteScoreText.setText(String.valueOf(model.getWhiteScoreByte()));
-                                        blackScoreText.setText(String.valueOf(model.getBlackScoreByte()));
-                                    } else gameOver();
+                                    if (model.possibleMoves.isEmpty())
+                                        gameOver();
+                                    else
+                                        nextPlayer();
                                 }
                             }
                         }));
@@ -232,24 +227,45 @@ public class ReversiController {
         }
     }
 
+    // Перадать управление другому игроку
+    private void nextPlayer() {
+        for (Pair<Integer, Integer> p : model.possibleMoves)
+            updateSquare(p.getKey(), p.getValue(), 3);
+
+        if (model.fl)
+            helper.setText("1 player (black)");
+        else
+            helper.setText("2 player (white)");
+
+        whiteScoreText.setText(String.valueOf(model.getWhiteScoreByte()));
+        blackScoreText.setText(String.valueOf(model.getBlackScoreByte()));
+    }
+
     // Сообщить о конце партии и ее результате
     private void gameOver() {
+        model.repaintSquare = new ArrayList<>();
+
         rect.setVisible(true);
-        text.setVisible(true);
+        text1.setVisible(true);
+        text2.setVisible(true);
+        helper.setVisible(false);
 
         byte black = model.getBlackScoreByte();
         byte white = model.getWhiteScoreByte();
 
+        whiteScoreText.setText(String.valueOf(white));
+        blackScoreText.setText(String.valueOf(black));
+
         if (black > white) {
-            helper.setText("1 player (black) won");
+            text1.setText("Black won");
             return;
         }
         if (white > black) {
-            helper.setText("2 player (white) won");
+            text1.setText("White won");
             return;
         }
 
-        helper.setText("Drawn game");
+        text1.setText("Drawn game");
     }
 
     // Открыть Wikipedia статью об игре в браузере
