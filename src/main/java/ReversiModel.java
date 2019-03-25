@@ -10,14 +10,14 @@ public class ReversiModel {
     // 0 - клетка пустая
     // 1 - клетка занята черной фишкой
     // 2 - клетка занята белой фишкой
-    final byte[][] array = new byte[8][8];
+    final private static byte[][] array = new byte[8][8];
 
     // Переменные для текщего счета игры
-    private byte blackScoreByte;
-    private byte whiteScoreByte;
+    private static byte blackScoreByte;
+    private static byte whiteScoreByte;
 
     // Флаг, указывающий, кто ходит (true - черные, false - белые)
-    boolean fl;
+    private static boolean fl;
 
     // Флаги, указывающие на невозможность игрока сделать следующий ход
     // Партия заканчивается, когда оба флага = true
@@ -27,11 +27,11 @@ public class ReversiModel {
     // Набор с элементами Pair
     // Храненит координаты клеток, подходящих для следующего хода
     // (эти клетки отдельно подсвечиваются на поле желтым)
-    Set<Pair<Integer, Integer>> possibleMoves;
+    private static Set<Pair<Integer, Integer>> possibleMoves;
 
     // Массив с элементами Pair
     // Храненит координаты клеток, которые нужно перерисовать
-    List<Pair<Integer, Integer>> repaintSquare;
+    private static List<Pair<Integer, Integer>> repaintSquare;
 
     // Инициализировать все параметры начальными значениями
     void initialValues() {
@@ -65,14 +65,13 @@ public class ReversiModel {
         blackScoreByte = 2;
     }
 
-    byte getWhiteScoreByte() { return whiteScoreByte; }
-
-    byte getBlackScoreByte() { return blackScoreByte; }
-
     // Формирование массива possibleMoves со всеми возможными вариантами ходов в текущей ситуации
     void setPossibleMoves() {
         // Проверка на конец партии
-        if (impossibleNextStepBlack && impossibleNextStepWhite) return;
+        if (impossibleNextStepBlack && impossibleNextStepWhite) {
+            repaintSquare = new ArrayList<>();
+            return;
+        }
 
         possibleMoves = new HashSet<>();
         // Номер того игрока, который ходил в предыдущий раз
@@ -421,4 +420,16 @@ public class ReversiModel {
             }
     }
 
+    //Геттеры
+    byte getWhiteScoreByte() { return whiteScoreByte; }
+
+    byte getBlackScoreByte() { return blackScoreByte; }
+
+    boolean getFl() { return fl; }
+
+    byte getValueFromArray(int i, int j) { return array[i][j]; }
+
+    List<Pair<Integer, Integer>> getRepaintSquare() { return repaintSquare; }
+
+    Set<Pair<Integer, Integer>> getPossibleMoves() { return possibleMoves; }
 }

@@ -15,7 +15,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ReversiController {
     final private ReversiModel model = new ReversiModel();
@@ -62,11 +62,12 @@ public class ReversiController {
     // Задать всем параметрам начальные значения
     void forRestart() {
         model.initialValues();
-        for (Pair<Integer, Integer> p : model.repaintSquare)
-            updateSquare(p.getKey(), p.getValue(), model.array[p.getKey()][p.getValue()]);
+        for (Pair<Integer, Integer> p : model.getRepaintSquare())
+            updateSquare(p.getKey(), p.getValue(),
+                    model.getValueFromArray(p.getKey(), p.getValue()));
 
         model.setPossibleMoves();
-        for (Pair<Integer, Integer> p : model.possibleMoves)
+        for (Pair<Integer, Integer> p : model.getPossibleMoves())
             updateSquare(p.getKey(), p.getValue(), 3);
 
         rect.setVisible(false);
@@ -163,7 +164,7 @@ public class ReversiController {
 
                                 // Проверка корректности выбранной клети
                                 boolean tmpFl = false;
-                                for (Pair<Integer, Integer> p : model.possibleMoves)
+                                for (Pair<Integer, Integer> p : model.getPossibleMoves())
                                     if (p.getKey() == i && p.getValue() == j) {
                                         tmpFl = true;
                                         break;
@@ -172,15 +173,16 @@ public class ReversiController {
                                 if (tmpFl) {
                                     // Перед тем как сделать очередной ход,
                                     // нужно убрать старые желтые выделения клеток
-                                    for (Pair<Integer, Integer> p : model.possibleMoves)
+                                    for (Pair<Integer, Integer> p : model.getPossibleMoves())
                                         updateSquare(p.getKey(), p.getValue(), 0);
 
                                     model.analyzeAction(i, j, true, false);
-                                    for (Pair<Integer, Integer> p : model.repaintSquare)
-                                        updateSquare(p.getKey(), p.getValue(), model.array[p.getKey()][p.getValue()]);
+                                    for (Pair<Integer, Integer> p : model.getRepaintSquare())
+                                        updateSquare(p.getKey(), p.getValue(),
+                                                model.getValueFromArray(p.getKey(), p.getValue()));
 
                                     model.setPossibleMoves();
-                                    if (model.possibleMoves.isEmpty())
+                                    if (model.getPossibleMoves().isEmpty())
                                         gameOver();
                                     else
                                         nextPlayer();
@@ -201,10 +203,10 @@ public class ReversiController {
                 Object column = GridPane.getColumnIndex(source);
 
                 if (row != null && column != null) {
-                    for (Pair<Integer, Integer> p1 : model.possibleMoves)
+                    for (Pair<Integer, Integer> p1 : model.getPossibleMoves())
                         if (p1.getKey() == row && p1.getValue() == column) {
                             model.analyzeAction((int)row, (int)column, false, true);
-                            for (Pair<Integer, Integer> p2 : model.repaintSquare)
+                            for (Pair<Integer, Integer> p2 : model.getRepaintSquare())
                                 updateSquare(p2.getKey(), p2.getValue(), 4);
                     }
                 }
@@ -212,16 +214,17 @@ public class ReversiController {
 
             // Уход мыши из клетки
             g.setOnMouseExited((e) -> {
-                for (int i = 0; i < model.repaintSquare.size(); i++) {
-                    int key = model.repaintSquare.get(i).getKey();
-                    int value = model.repaintSquare.get(i).getValue();
+                List<Pair<Integer, Integer>> tmp = model.getRepaintSquare();
+                for (int i = 0; i < tmp.size(); i++) {
+                    int key = tmp.get(i).getKey();
+                    int value = tmp.get(i).getValue();
 
                     // 0 элемент всегда содержит координаты клетки,
                     // которой нужно вернуть желтое выделение
                     if (i == 0)
                         updateSquare(key, value, 3);
                     else
-                        updateSquare(key, value, model.array[key][value]);
+                        updateSquare(key, value, model.getValueFromArray(key, value));
                 }
             });
         }
@@ -229,10 +232,10 @@ public class ReversiController {
 
     // Перадать управление другому игроку
     private void nextPlayer() {
-        for (Pair<Integer, Integer> p : model.possibleMoves)
+        for (Pair<Integer, Integer> p : model.getPossibleMoves())
             updateSquare(p.getKey(), p.getValue(), 3);
 
-        if (model.fl)
+        if (model.getFl())
             helper.setText("1 player (black)");
         else
             helper.setText("2 player (white)");
@@ -243,8 +246,6 @@ public class ReversiController {
 
     // Сообщить о конце партии и ее результате
     private void gameOver() {
-        model.repaintSquare = new ArrayList<>();
-
         rect.setVisible(true);
         text1.setVisible(true);
         text2.setVisible(true);
