@@ -133,13 +133,11 @@ public class ReversiModel {
         impossibleNextStepBlack = false;
     }
 
-    // implement = false : проверяет, найдется ли непрерывный ряд фишек соперника
-    // хотя бы по одному из 8 возможных направлений, если сходить в (i, j)
-    //
-    // implement = true : делает ход в (i, j)
-    //
-    // showPotential = true, когда нужно отметить фишки, которыми завладеет игрок,
-    // если сделает ход в (i, j)
+    // Ищет непрерывный ряд фишек соперника хотя бы по одному из 8 возможных
+    // направлений относительно клетки (i, j)
+    // Если implement = true, делает ход в (i, j)
+    // Если showPotential = true, выделяет клетки противника, которыми
+    // завлдеет игрок, если сделает ход в (i, j)
     boolean analyzeAction (int i, int j, boolean implement, boolean showPotential) {
         repaintSquare = new ArrayList<>();
 
