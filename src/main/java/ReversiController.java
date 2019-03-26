@@ -73,7 +73,6 @@ public class ReversiController {
         rect.setVisible(false);
         text1.setVisible(false);
         text2.setVisible(false);
-        helper.setVisible(true);
 
         helper.setText("1 player (black)");
 
@@ -232,6 +231,7 @@ public class ReversiController {
 
     // Перадать управление другому игроку
     private void nextPlayer() {
+        // Выделить клетки, куда можно будет сходить
         for (Pair<Integer, Integer> p : model.getPossibleMoves())
             updateSquare(p.getKey(), p.getValue(), 3);
 
@@ -249,7 +249,7 @@ public class ReversiController {
         rect.setVisible(true);
         text1.setVisible(true);
         text2.setVisible(true);
-        helper.setVisible(false);
+        helper.setText("---Game Over---");
 
         byte black = model.getBlackScoreByte();
         byte white = model.getWhiteScoreByte();
@@ -257,16 +257,12 @@ public class ReversiController {
         whiteScoreText.setText(String.valueOf(white));
         blackScoreText.setText(String.valueOf(black));
 
-        if (black > white) {
+        if (black > white)
             text1.setText("Black won");
-            return;
-        }
-        if (white > black) {
-            text1.setText("White won");
-            return;
-        }
-
-        text1.setText("Drawn game");
+        else if (white > black)
+                text1.setText("White won");
+            else
+                text1.setText("Drawn game");
     }
 
     // Открыть Wikipedia статью об игре в браузере
