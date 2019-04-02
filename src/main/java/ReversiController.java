@@ -59,7 +59,7 @@ public class ReversiController {
     final Text text1 = new Text(232, 300, "");
     final Text text2 = new Text(160, 335, "Press RESTART to continue");
 
-    // Создать 64 Canvas
+    // Создать 64 Canvas и поместить их в arrayCanvas и в gridPane
     void createCanvas() {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++) {

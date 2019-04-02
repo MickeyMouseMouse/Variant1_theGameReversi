@@ -89,7 +89,7 @@ public class ReversiView extends Application {
         // Нажатие мыши на grid
         controller.grid.setOnMousePressed((e) -> controller.makeNextStep());
 
-        // Наведение мыши на grid (выделение клеток, которыми можно завладеть)
+        // Наведение мыши на grid
         controller.showNextPotentialStep();
     }
 }
