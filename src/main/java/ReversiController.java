@@ -59,8 +59,18 @@ public class ReversiController {
     final Text text1 = new Text(232, 300, "");
     final Text text2 = new Text(160, 335, "Press RESTART to continue");
 
+    // Создать 64 Canvas
+    void createCanvas() {
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++) {
+                Canvas result = new Canvas(60, 60);
+                arrayCanvas[i][j] = result;
+                grid.add(result, j, i);
+            }
+    }
+
     // Задать всем параметрам начальные значения
-    void forRestart() {
+    void start() {
         model.initialValues();
         for (Pair<Integer, Integer> p : model.getRepaintSquare())
             updateSquare(p.getKey(), p.getValue(),
@@ -88,11 +98,6 @@ public class ReversiController {
     // 4 - клетка со звездой
     private void updateSquare(int i, int j, int mode) {
         Canvas result = arrayCanvas[i][j];
-
-        // Флаг = true, если очередной элемент arrayCanvas еще не создан
-        boolean tmpFl = result == null;
-        if (tmpFl) result = new Canvas(60, 60);
-
         GraphicsContext picture = result.getGraphicsContext2D();
 
         if (mode != 4) {
@@ -145,9 +150,6 @@ public class ReversiController {
 
         // Присваение перерисованной Canvas
         arrayCanvas[i][j] = result;
-
-        // Если это первая отрисовка поля, то добавляем Canvas'ы в grid
-        if (tmpFl) grid.add(arrayCanvas[i][j], j, i);
     }
 
     // Сделать ход

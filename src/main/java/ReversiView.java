@@ -74,13 +74,14 @@ public class ReversiView extends Application {
         stage.setScene(scene);
 
         // Начало игры
-        controller.forRestart();
+        controller.createCanvas();
+        controller.start();
 
         // Показ окна
         stage.show();
 
         // Перезапус игры
-        controller.restart.setOnMouseClicked((e) -> controller.forRestart());
+        controller.restart.setOnMouseClicked((e) -> controller.start());
 
         // Открытие Wikipedia статьи об игре
         controller.hyperlink.setOnMouseClicked((e) -> controller.openWiki());
