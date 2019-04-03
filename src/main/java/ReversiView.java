@@ -4,7 +4,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class ReversiView extends Application {
@@ -25,18 +24,18 @@ public class ReversiView extends Application {
         stage.setTitle("Reversi");
 
         // Настройка визуализации надписи "WHITE"
-        controller.white.setFont(Font.font(null, FontWeight.BOLD, 18));
+        controller.white.setFont(Font.font(null, 18));
 
         // Настройка визуализации счета игры
-        controller.whiteScoreText.setFont(Font.font(null, FontWeight.BOLD, 18));
-        controller.blackScoreText.setFont(Font.font(null, FontWeight.BOLD, 18));
+        controller.whiteScoreText.setFont(Font.font(null, 18));
+        controller.blackScoreText.setFont(Font.font(null, 18));
 
         // Настройка визуализации кнопки RESTART
         controller.restart.setLayoutX(250);
         controller.restart.setLayoutY(10);
 
         // Настройка визуализации надписи "BLACK"
-        controller.black.setFont(Font.font(null, FontWeight.BOLD, 18));
+        controller.black.setFont(Font.font(null, 18));
 
         // Настройка визуализации вертикальной нумерации клеток
         controller.verticalNumeration.setLayoutX(30);
@@ -60,7 +59,7 @@ public class ReversiView extends Application {
         // Настройка визуализации указателя хода
         controller.helper.setFont(Font.font(null,17));
 
-        // Настройка визуализация окончания партии:
+        // Настройка визуализация окончания партии
         controller.rect.setX(130);
         controller.rect.setY(270);
         controller.rect.setWidth(320);
@@ -70,10 +69,12 @@ public class ReversiView extends Application {
         controller.text2.setFont(Font.font(null, 20));
 
         // Добавление всех элементов в окно
-        Group root = new Group(controller.white, controller.whiteScoreText, controller.restart, controller.black,
-                controller.blackScoreText, controller.horizontalNumeration, controller.verticalNumeration,
-                controller.grid, controller.helper, controller.hyperlink, controller.rect, controller.text1,
-                controller.text2);
+        Group root = new Group(controller.white, controller.whiteScoreText,
+                controller.restart, controller.black,
+                controller.blackScoreText, controller.horizontalNumeration,
+                controller.verticalNumeration, controller.grid,
+                controller.helper, controller.hyperlink, controller.rect,
+                controller.text1, controller.text2);
         Scene scene = new Scene(root, Color.LIGHTSEAGREEN);
         stage.setScene(scene);
 
@@ -84,7 +85,7 @@ public class ReversiView extends Application {
         // Показ окна
         stage.show();
 
-        // Перезапус игры
+        // Перезапуск игры
         controller.restart.setOnMouseClicked((e) -> controller.start());
 
         // Открытие Wikipedia статьи об игре
@@ -93,7 +94,7 @@ public class ReversiView extends Application {
         // Нажатие мыши на grid
         controller.grid.setOnMousePressed((e) -> controller.makeNextStep());
 
-        // Наведение мыши на grid
+        // Наведение (уход) мыши на (с) grid
         controller.showNextPotentialStep();
     }
 }

@@ -400,8 +400,8 @@ public class ReversiModel {
         }
 
         if (implement) {
-            fl = !fl;
             updateScore();
+            fl = !fl;
         }
 
         return false;
@@ -409,13 +409,14 @@ public class ReversiModel {
 
     // Обновление текущего счета
     private void updateScore() {
-        blackScoreByte = 0;
-        whiteScoreByte = 0;
-        for (byte i = 0; i < 8; i++)
-            for (byte j = 0; j < 8; j++) {
-                if (array[i][j] == 1) blackScoreByte++;
-                if (array[i][j] == 2) whiteScoreByte++;
-            }
+        if (fl) {
+            blackScoreByte += (byte) repaintSquare.size();
+            whiteScoreByte -= (byte) (repaintSquare.size() - 1);
+        }
+        else {
+            whiteScoreByte += (byte) repaintSquare.size();
+            blackScoreByte -= (byte) (repaintSquare.size() - 1);
+        }
     }
 
     //Геттеры

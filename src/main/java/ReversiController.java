@@ -63,9 +63,8 @@ public class ReversiController {
     void createCanvas() {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++) {
-                Canvas result = new Canvas(60, 60);
-                arrayCanvas[i][j] = result;
-                grid.add(result, j, i);
+                arrayCanvas[i][j] = new Canvas(60, 60);
+                grid.add(arrayCanvas[i][j], j, i);
             }
     }
 
@@ -90,7 +89,8 @@ public class ReversiController {
         blackScoreText.setText(String.valueOf(model.getBlackScoreByte()));
     }
 
-    // Перерисовать заданную клетку поля; mode:
+    // Перерисовать заданную клетку поля
+    // Возможные значения mode:
     // 0 - клетка пустая
     // 1 - клетка занята черной фишкой
     // 2 - клетка занята белой фишкой
@@ -100,6 +100,7 @@ public class ReversiController {
         Canvas result = arrayCanvas[i][j];
         GraphicsContext picture = result.getGraphicsContext2D();
 
+        // Если mode = 4 (звезда), то не нужно затирать имеющийся рисунок
         if (mode != 4) {
             picture.clearRect(0, 0, 60, 60);
             picture.setGlobalAlpha(1);
@@ -117,7 +118,7 @@ public class ReversiController {
 
             // Developer's signature :)
             picture.setFill(Color.WHITE);
-            picture.fillText("Jeus", 14, 34);
+            picture.fillText("Jeus", 15, 34);
         }
 
         // Добавление в пустую клетку белой фишки
@@ -148,7 +149,7 @@ public class ReversiController {
             picture.fillPolygon(x, y, 10);
         }
 
-        // Присваение перерисованной Canvas
+        // Присвоение перерисованной Canvas
         arrayCanvas[i][j] = result;
     }
 
@@ -177,7 +178,9 @@ public class ReversiController {
                                     for (Pair<Integer, Integer> p : model.getPossibleMoves())
                                         updateSquare(p.getKey(), p.getValue(), 0);
 
+                                    // Сделать ход
                                     model.analyzeAction(i, j, true, false);
+                                    // Перерисовать
                                     for (Pair<Integer, Integer> p : model.getRepaintSquare())
                                         updateSquare(p.getKey(), p.getValue(),
                                                 model.getValueFromArray(p.getKey(), p.getValue()));
@@ -196,7 +199,7 @@ public class ReversiController {
     // на которую наведена мышка
     void showNextPotentialStep() {
         for (Node g : grid.getChildren()) {
-            // Приход мыши в клетку
+            // Наведение мыши на клетку
             g.setOnMouseEntered((e) -> {
                 Node source = (javafx.scene.Node) e.getSource();
 
