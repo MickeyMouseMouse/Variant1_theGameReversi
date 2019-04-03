@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -12,6 +13,9 @@ public class ReversiView extends Application {
     @Override
     public void start(Stage stage) {
         final ReversiController controller = new ReversiController();
+
+        // Установка иконки приложения
+        stage.getIcons().add(new Image("icon.png"));
 
         // Настройка окна
         stage.setHeight(630);
