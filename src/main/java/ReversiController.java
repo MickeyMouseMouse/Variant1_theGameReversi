@@ -71,9 +71,9 @@ public class ReversiController {
     // Задать всем параметрам начальные значения
     void start() {
         model.initialValues();
-        for (Pair<Integer, Integer> p : model.getRepaintSquare())
-            updateSquare(p.getKey(), p.getValue(),
-                    model.getValueFromArray(p.getKey(), p.getValue()));
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
+                updateSquare(i, j, model.getValueFromArray(i, j));
 
         model.setPossibleMoves();
         for (Pair<Integer, Integer> p : model.getPossibleMoves())

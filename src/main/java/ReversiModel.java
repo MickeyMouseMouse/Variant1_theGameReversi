@@ -27,16 +27,14 @@ public class ReversiModel {
     // Набор с элементами Pair
     // Храненит координаты клеток, подходящих для следующего хода
     // (эти клетки отдельно подсвечиваются на поле желтым)
-    private static Set<Pair<Integer, Integer>> possibleMoves;
+    private static Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
 
     // Массив с элементами Pair
     // Храненит координаты клеток, которые нужно перерисовать
-    private static List<Pair<Integer, Integer>> repaintSquare;
+    private static List<Pair<Integer, Integer>> repaintSquare = new ArrayList<>();
 
     // Инициализировать все параметры начальными значениями
     void initialValues() {
-        repaintSquare = new ArrayList<>();
-
         // Инициализация array начальными значениями
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++) {
@@ -49,8 +47,6 @@ public class ReversiModel {
                 else if (i == 4 && j == 3)
                     array[i][j] = 1;
                 else array[i][j] = 0;
-
-                repaintSquare.add(new Pair<>(i, j));
             }
 
         // Первыми ходят черные
@@ -69,11 +65,12 @@ public class ReversiModel {
     void setPossibleMoves() {
         // Проверка на конец партии
         if (impossibleNextStepBlack && impossibleNextStepWhite) {
-            repaintSquare = new ArrayList<>();
+            repaintSquare.clear();
             return;
         }
 
-        possibleMoves = new HashSet<>();
+        possibleMoves.clear();
+
         // Номер того игрока, который ходил в предыдущий раз
         byte blackOrWhite = fl ? (byte) 2 : 1;
         for (int i = 0; i < 8; i++)
@@ -139,7 +136,7 @@ public class ReversiModel {
     // Если showPotential = true, выделяет клетки противника, которыми
     // завлдеет игрок, если сделает ход в (i, j)
     boolean analyzeAction (int i, int j, boolean implement, boolean showPotential) {
-        repaintSquare = new ArrayList<>();
+        repaintSquare.clear();
 
         if (implement || showPotential) repaintSquare.add(new Pair<>(i, j));
 
