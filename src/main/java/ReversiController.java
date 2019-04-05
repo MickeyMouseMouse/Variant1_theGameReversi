@@ -148,9 +148,6 @@ public class ReversiController {
             picture.setGlobalAlpha(0.9);
             picture.fillPolygon(x, y, 10);
         }
-
-        // Присвоение перерисованной Canvas
-        arrayCanvas[i][j] = result;
     }
 
     // Сделать ход
