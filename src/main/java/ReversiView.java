@@ -69,13 +69,13 @@ public class ReversiView extends Application {
         controller.text2.setFont(Font.font(null, 20));
 
         // Добавление всех элементов в окно
-        Group root = new Group(controller.white, controller.whiteScoreText,
-                controller.restart, controller.black,
-                controller.blackScoreText, controller.horizontalNumeration,
-                controller.verticalNumeration, controller.grid,
-                controller.helper, controller.hyperlink, controller.rect,
-                controller.text1, controller.text2);
-        Scene scene = new Scene(root, Color.LIGHTSEAGREEN);
+        final Group root = new Group(controller.white,
+                controller.whiteScoreText, controller.restart,
+                controller.black, controller.blackScoreText,
+                controller.horizontalNumeration, controller.verticalNumeration,
+                controller.grid, controller.helper, controller.hyperlink,
+                controller.rect, controller.text1, controller.text2);
+        final Scene scene = new Scene(root, Color.LIGHTSEAGREEN);
         stage.setScene(scene);
 
         // Начало игры
