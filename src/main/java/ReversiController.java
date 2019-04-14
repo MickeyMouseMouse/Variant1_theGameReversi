@@ -60,7 +60,7 @@ public class ReversiController {
     final Text text2 = new Text(160, 335, "Press RESTART to continue");
 
     // Создать 64 Canvas и поместить их в arrayCanvas и в gridPane
-    void createCanvas() {
+    public void createCanvas() {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++) {
                 arrayCanvas[i][j] = new Canvas(60, 60);
@@ -69,7 +69,7 @@ public class ReversiController {
     }
 
     // Задать всем параметрам начальные значения
-    void start() {
+    public void start() {
         model.initialValues();
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
@@ -96,7 +96,7 @@ public class ReversiController {
     // 2 - клетка занята белой фишкой
     // 3 - клетка подсвечивается (доступная для слудующего хода)
     // 4 - клетка со звездой
-    private void updateSquare(int i, int j, int mode) {
+    private static void updateSquare(int i, int j, int mode) {
         Canvas result = arrayCanvas[i][j];
         GraphicsContext picture = result.getGraphicsContext2D();
 
@@ -151,7 +151,7 @@ public class ReversiController {
     }
 
     // Сделать ход
-    void makeNextStep() {
+    public void makeNextStep() {
         grid.getChildren()
                 .forEach(grid ->
                         grid.setOnMouseReleased((e) -> {
@@ -194,7 +194,7 @@ public class ReversiController {
 
     // Выделить фишки, которыми можно завладеть, если сделать ход в клетку,
     // на которую наведена мышка
-    void showNextPotentialStep() {
+    public void showNextPotentialStep() {
         for (Node g : grid.getChildren()) {
             // Наведение мыши на клетку
             g.setOnMouseEntered((e) -> {
@@ -268,7 +268,7 @@ public class ReversiController {
     }
 
     // Открыть Wikipedia статью об игре в браузере
-    void openWiki() {
+    public void openWiki() {
         try {
             Desktop.getDesktop().browse(new URI("https://en.wikipedia.org/wiki/Reversi"));
         }

@@ -34,7 +34,7 @@ public class ReversiModel {
     private static List<Pair<Integer, Integer>> repaintSquare = new ArrayList<>();
 
     // Инициализировать все параметры начальными значениями
-    void initialValues() {
+    public void initialValues() {
         // Инициализация array начальными значениями
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++) {
@@ -62,7 +62,7 @@ public class ReversiModel {
     }
 
     // Формирование массива possibleMoves со всеми возможными вариантами ходов в текущей ситуации
-    void setPossibleMoves() {
+    public void setPossibleMoves() {
         // Проверка на конец партии
         if (impossibleNextStepBlack && impossibleNextStepWhite) {
             repaintSquare.clear();
@@ -135,7 +135,7 @@ public class ReversiModel {
     // Если implement = true, делает ход в (i, j)
     // Если showPotential = true, выделяет клетки противника, которыми
     // завлдеет игрок, если сделает ход в (i, j)
-    boolean analyzeAction (int i, int j, boolean implement, boolean showPotential) {
+    public boolean analyzeAction (int i, int j, boolean implement, boolean showPotential) {
         repaintSquare.clear();
 
         if (implement || showPotential) repaintSquare.add(new Pair<>(i, j));
@@ -417,15 +417,15 @@ public class ReversiModel {
     }
 
     //Геттеры
-    byte getWhiteScoreByte() { return whiteScoreByte; }
+    public byte getWhiteScoreByte() { return whiteScoreByte; }
 
-    byte getBlackScoreByte() { return blackScoreByte; }
+    public byte getBlackScoreByte() { return blackScoreByte; }
 
-    boolean getFl() { return fl; }
+    public boolean getFl() { return fl; }
 
-    byte getValueFromArray(int i, int j) { return array[i][j]; }
+    public byte getValueFromArray(int i, int j) { return array[i][j]; }
 
-    List<Pair<Integer, Integer>> getRepaintSquare() { return repaintSquare; }
+    public List<Pair<Integer, Integer>> getRepaintSquare() { return repaintSquare; }
 
-    Set<Pair<Integer, Integer>> getPossibleMoves() { return possibleMoves; }
+    public Set<Pair<Integer, Integer>> getPossibleMoves() { return possibleMoves; }
 }
