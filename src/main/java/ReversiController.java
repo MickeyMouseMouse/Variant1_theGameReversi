@@ -97,8 +97,7 @@ public class ReversiController {
     // 3 - клетка подсвечивается (доступная для слудующего хода)
     // 4 - клетка со звездой
     private static void updateSquare(int i, int j, int mode) {
-        Canvas result = arrayCanvas[i][j];
-        GraphicsContext picture = result.getGraphicsContext2D();
+        GraphicsContext picture = arrayCanvas[i][j].getGraphicsContext2D();
 
         // Если mode = 4 (звезда), то не нужно затирать имеющийся рисунок
         if (mode != 4) {
